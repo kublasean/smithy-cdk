@@ -5,18 +5,45 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "jsii",
+    "build:watch": "jsii --watch",
+    "package": "jsii-pacmak"
   },
-  "author": "kublasean",
+  "author": {
+    "name": "Sean Whalen",
+    "url": "https://kublasean.github.io/"
+  },
+  "repository": {
+    "url": "https://github.com/kublasean/smithy-cdk.git",
+    "directory": "package",
+    "type": "git"
+  },
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "aws-cdk-lib": "^2.115.0",
+    "constructs": "^10.3.0"
+  },
+  "dependencies": {
     "jsonpath": "^1.1.1"
   },
+  "bundledDependencies": [
+    "jsonpath"
+  ],
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
     "@types/jsonpath": "^0.2.4",
     "@types/node": "^20.10.5",
-    "typescript": "^5.3.3"
+    "jsii": "^5.3.0",
+    "jsii-pacmak": "^1.93.0",
+    "typescript": "^5.3.3",
+    "aws-cdk-lib": "2.115.0",
+    "constructs": "10.3.0"
+  },
+  "stability": "experimental",
+  "types": "index.d.ts",
+  "jsii": {
+    "outdir": "dist",
+    "versionFormat": "full",
+    "targets": {}
   }
 }

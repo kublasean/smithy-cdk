@@ -1,0 +1,3 @@
+# Smithy-CDK
+
+Provides `SmithyApiDefinition`

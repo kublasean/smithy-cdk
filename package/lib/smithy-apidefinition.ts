@@ -3,6 +3,7 @@ import * as apigw from "aws-cdk-lib/aws-apigateway";
 import * as jp from 'jsonpath';
 import { SmithyIntegration } from './smithy-integration';
 import { SpecMethod } from "./smithy-method";
+import { Construct } from "constructs";
 
 export class SmithySubstitution {
     readonly uri?: string
@@ -32,7 +33,7 @@ export class SmithySubstitution {
 
 export class SmithyApiDefinition extends apigw.ApiDefinition {
 
-    public bind(scope: apigw.SpecRestApi): apigw.ApiDefinitionConfig {
+    public bind(scope: Construct): apigw.ApiDefinitionConfig {
 
         const nodes = jp.nodes(this.definition, "$..['Fn::Sub']");
         for (const node of nodes) {
@@ -57,7 +58,13 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
                 newValue = sub.uri;
 
                 if (sub.integration && shouldCreatePermissions(this.definition, node.path)) {
-                    sub.integration.bindToSpecMethod(SpecMethod.fromJsonPath(scope, node.path));
+
+                    if (scope instanceof apigw.SpecRestApi === false) {
+                        throw Error("Can only bind ApiDefinition to SpecRestApi");
+                    }
+                    const api = scope as apigw.SpecRestApi;
+
+                    sub.integration.bindToSpecMethod(SpecMethod.fromJsonPath(api, node.path));
                 }
 
             } else if (parent == "credentials") {

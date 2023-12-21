@@ -2,9 +2,9 @@ import * as apigw from "aws-cdk-lib/aws-apigateway";
 import * as jp from 'jsonpath'
 
 export interface ISpecMethod {
-    api: apigw.SpecRestApi,
-    httpMethod: string,
-    resourcePath: string,
+    readonly api: apigw.SpecRestApi,
+    readonly httpMethod: string,
+    readonly resourcePath: string,
 
     get methodArn(): string
     get testMethodArn(): string

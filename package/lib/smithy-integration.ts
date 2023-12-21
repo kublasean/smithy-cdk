@@ -9,21 +9,17 @@ import { ISpecMethod } from "./smithy-method";
 
 
 export interface SmithyIntegrationProps {
-    uri: string,
-    type: apigw.IntegrationType,
-    credentialsRole?: iam.IRole,
+    readonly uri: string,
+    readonly credentialsRole?: iam.IRole,
 }
 
 export abstract class SmithyIntegration {
-
-    readonly type: apigw.IntegrationType
 
     readonly uri: string
 
     readonly credentialsRole?: iam.IRole
 
     constructor(options: SmithyIntegrationProps) {
-        this.type = options.type;
         this.credentialsRole = options.credentialsRole;
         this.uri = options.uri;
     }
@@ -32,8 +28,8 @@ export abstract class SmithyIntegration {
 }
 
 export interface SmithyLambdaIntegrationProps {
-    credentialsRole?: iam.IRole,
-    allowTestInvoke?: boolean
+    readonly credentialsRole?: iam.IRole,
+    readonly allowTestInvoke?: boolean
 }
 
 export class SmithyLambdaIntegration extends SmithyIntegration {
@@ -45,7 +41,6 @@ export class SmithyLambdaIntegration extends SmithyIntegration {
     constructor(handler: lambda.IFunction, props?: SmithyLambdaIntegrationProps) {
         super({
             ...props,
-            type: apigw.IntegrationType.AWS,
             uri: getAwsUri(handler, {
                 service: 'lambda',
                 path: `2015-03-31/functions/${handler.functionArn}/invocations`
