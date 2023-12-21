@@ -1,6 +1,6 @@
 $version: "2.0"
 
-namespace nuxt3cdkexample
+namespace smithycdk
 
 use aws.protocols#restJson1
 use aws.apigateway#requestValidator
@@ -9,8 +9,8 @@ use aws.apigateway#integration
 /// Provides a friendly greeting from a AWS API Gateway deployed REST API
 @restJson1
 @requestValidator("full")
-@title("SmithyCdkExample API")
-service SmithyCdkExample {
+@title("HiByeApi")
+service HiByeApi {
     version: "2023-12-12"
     operations: [SayHi, SayBye]
 }

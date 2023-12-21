@@ -3742,7 +3742,7 @@
         },
         "locationInModule": {
           "filename": "lib/smithy-apidefinition.ts",
-          "line": 91
+          "line": 89
         },
         "parameters": [
           {
@@ -4330,5 +4330,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "uvF6KQTW5t6HZDWjXeoK70pWGKUfcvmc80Gg6VQzY3M="
+  "fingerprint": "+etE8tjSLnoDWt7GGecvd9Y2oNA1CQ7joWF5cxuV5ms="
 }

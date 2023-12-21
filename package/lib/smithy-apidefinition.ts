@@ -59,9 +59,7 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
 
                 if (sub.integration && shouldCreatePermissions(this.definition, node.path)) {
 
-                    if (scope instanceof apigw.SpecRestApi === false) {
-                        throw Error("Can only bind ApiDefinition to SpecRestApi");
-                    }
+                    // hahaha
                     const api = scope as apigw.SpecRestApi;
 
                     sub.integration.bindToSpecMethod(SpecMethod.fromJsonPath(api, node.path));

@@ -8,6 +8,44 @@ import { SmithyApiDefinition, SmithyLambdaIntegration, SmithySubstitution } from
 
 import * as fs from 'fs'
 import * as path from 'path'
+import { ExecSyncOptions, execSync } from 'node:child_process';
+
+interface SmithyBuildOptions {
+    readonly outDir?: string
+    readonly srcDir: string
+    readonly modelName: string
+}
+
+function buildSmithyModel(props: SmithyBuildOptions): any {
+
+    const execOptions: ExecSyncOptions = { stdio: ['ignore', process.stderr, 'inherit'] };
+
+    const outDir = props.outDir ?? path.join(props.srcDir, 'build', 'smithy');
+
+    const modelPath = path.join(outDir, 'openapi-conversion', 'openapi', `${props.modelName}.openapi.json`);
+
+    console.log(modelPath);
+
+    if (!fs.existsSync(modelPath)) {
+
+        const commands: string[] = [
+            `smithy build --output ${outDir}`
+        ]
+
+        console.log(`building Smithy API in ${props.srcDir}...`);
+
+        for (const command of commands) {
+            execSync(command, {
+                ...execOptions,
+                cwd: props.srcDir
+            });
+        }
+    } else {
+        console.log('using pre-built Smithy model, build manually to update');
+    }
+
+    return JSON.parse(fs.readFileSync(modelPath, 'utf-8'));
+}
 
 export class SmithyCdkExampleStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -31,10 +69,10 @@ export class SmithyCdkExampleStack extends cdk.Stack {
             allowTestInvoke: true
         });
 
-        // Read in the Smithy generated OpenAPI spec
-        const modelJson = JSON.parse(
-            fs.readFileSync(path.join(__dirname, '..', 'smithy', 'build', 'smithy', 
-                'openapi-conversion', 'openapi', 'RenderTest.openapi.json'), 'utf-8'));
+        const modelJson = buildSmithyModel({
+            srcDir: path.join(__dirname, 'smithy'),
+            modelName: 'HiByeApi'
+        });
 
         // Create the API Gateway REST API
         new SpecRestApi(this, 'hiByeApi', {

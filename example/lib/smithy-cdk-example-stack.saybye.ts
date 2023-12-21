@@ -9,7 +9,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     return {
         statusCode: 200,
         body: JSON.stringify({
-            greeting: `Bye ${salutation} ${name}! -- from api lambda`
+            farewell: `Bye ${salutation} ${name}! -- from api lambda`
         })
     };
 };
