@@ -9,19 +9,23 @@ import { ISpecMethod } from "./smithy-method";
 
 
 export interface SmithyIntegrationProps {
-    readonly uri: string,
+    readonly uri?: string,
     readonly credentialsRole?: iam.IRole,
 }
 
 export abstract class SmithyIntegration {
 
-    readonly uri: string
+    readonly uri?: string
 
     readonly credentialsRole?: iam.IRole
 
     constructor(options: SmithyIntegrationProps) {
         this.credentialsRole = options.credentialsRole;
         this.uri = options.uri;
+
+        if (!this.uri && !this.credentialsRole) {
+            throw Error("Invalid SmithyIntegration, must have credentials or uri");
+        }
     }
 
     abstract bindToSpecMethod(method: ISpecMethod): void

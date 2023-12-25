@@ -134,3 +134,7 @@ dist
 *.d.ts
 
 build
+example/lib/smithy-cdk.code-workspace
+package/tsdoc-metadata.json
+
+package/temp

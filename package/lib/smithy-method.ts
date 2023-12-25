@@ -36,11 +36,11 @@ export class SpecMethod implements ISpecMethod {
             .filter((strVal) => strVal.startsWith('/'))
             .join('');
 
-        const method = jsonPath.at(-4)?.toString().toUpperCase()!; // haha trust me
+        const method = jsonPath.at(-4)!.toString().toUpperCase(); // haha trust me
         return new SpecMethod(api, method, resource);
     }
 }
 
 function pathForArn(path: string): string {
-    return path.replace(/\{[^\}]*\}/g, '*'); // replace path parameters (like '{bookId}') with asterisk
+    return path.replace(/\{[^}]*\}/g, '*'); // replace path parameters (like '{bookId}') with asterisk
 }

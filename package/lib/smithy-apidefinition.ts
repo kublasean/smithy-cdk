@@ -1,43 +1,32 @@
 import * as apigw from "aws-cdk-lib/aws-apigateway";
 
 import * as jp from 'jsonpath';
-import { SmithyIntegration } from './smithy-integration';
 import { SpecMethod } from "./smithy-method";
 import { Construct } from "constructs";
+import { SmithyIntegration } from "./smithy-integration";
 
-export class SmithySubstitution {
-    readonly uri?: string
 
-    readonly credentials?: string
-
-    readonly integration?: SmithyIntegration
-
-    constructor(uri?: string, credentials?: string, integration?: SmithyIntegration) {
-        if (!uri && !credentials && !integration) {
-            throw Error("SmithySubstitution must have uri, credentials, or integration, all cannot be undefined");
-        }
-
-        if (integration && (uri || credentials)) {
-            throw Error("Cannot have uri/credentials and integration");
-        }
-
-        this.uri = integration ? integration.uri : uri;
-        this.credentials = credentials ? credentials : integration?.credentialsRole?.roleArn;
-        this.integration = integration
-    }
-
-    static fromIntegration(integration: SmithyIntegration): SmithySubstitution {
-        return new SmithySubstitution(undefined, undefined, integration);
-    }
-}
-
+/**
+ * Thin wrapper for a Smithy generated OpenAPI JSON spec file. Allows for injection of CDK references into 
+ * certain sections of the file.
+ * @beta
+ */
 export class SmithyApiDefinition extends apigw.ApiDefinition {
 
+    
+    /**
+     * Binds the definition to a SpecRestAPI, substituting provided integrations into the spec JSON.
+     * 
+     * If an integration is found for a uri without having credentials already in the spec, then 
+     * will defer to the integration to create a credentials role.
+     *
+     * @param scope - should ONLY be a SpecRestAPI, but jsii requires this type to be Construct
+     */
     public bind(scope: Construct): apigw.ApiDefinitionConfig {
 
         const nodes = jp.nodes(this.definition, "$..['Fn::Sub']");
         for (const node of nodes) {
-            console.log(node.value);
+            console.debug(node.value);
 
             if (node.path.length < 2) {
                 throw Error("Fn::Sub is only supported for uri and credentials");
@@ -53,25 +42,28 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
             const sub = this.substitutions[subKey];
             let newValue: string
 
-            if (parent === "uri" && sub.uri) {
-                console.log(`replacing uri ${node.value} with ${sub.uri}`);
+            if (parent === "uri") {
+                if (!sub.uri) {
+                    throw Error(`Unmatched uri subsititution: ${node.value}`);
+                }
+                console.debug(`replacing uri ${node.value} with ${sub.uri}`);
                 newValue = sub.uri;
 
-                if (sub.integration && shouldCreatePermissions(this.definition, node.path)) {
+                if (shouldCreatePermissions(this.definition, node.path)) {
 
                     // hahaha
                     const api = scope as apigw.SpecRestApi;
 
-                    sub.integration.bindToSpecMethod(SpecMethod.fromJsonPath(api, node.path));
+                    sub.bindToSpecMethod(SpecMethod.fromJsonPath(api, node.path));
                 }
 
             } else if (parent == "credentials") {
-                if (!sub.credentials) {
+                if (!sub.credentialsRole) {
                     throw Error(`Unmatched credentials substitution: ${node.value}`);
                 }
 
-                console.log(`replacing credentials ${node.value} with ${sub.credentials}`);
-                newValue = sub.credentials;
+                console.debug(`replacing credentials ${node.value} with ${sub.credentialsRole.roleArn}`);
+                newValue = sub.credentialsRole.roleArn;
 
             } else {
                 throw Error("Fn::Sub is currently only supported for uri and credentials");
@@ -86,7 +78,7 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
         }
     }
 
-    constructor(private definition: any, private substitutions: { [key: string]: SmithySubstitution }) {
+    constructor(private definition: unknown, private substitutions: { [key: string]: SmithyIntegration }) {
         super();
     }
 }
@@ -109,9 +101,7 @@ function getSubstitutionKey(wrappedSubKey: string) {
     return subKey;
 }
 
-function shouldCreatePermissions(json: any, jsonPath: jp.PathComponent[]): boolean {
-    console.log(jsonPath);
-
+function shouldCreatePermissions(json: unknown, jsonPath: jp.PathComponent[]): boolean {
     const newPath = jsonPath.slice(0, -2);
     newPath.push('credentials');
 

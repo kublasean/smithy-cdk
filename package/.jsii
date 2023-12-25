@@ -3733,7 +3733,12 @@
       "assembly": "smithy-cdk",
       "base": "aws-cdk-lib.aws_apigateway.ApiDefinition",
       "docs": {
-        "stability": "experimental"
+        "custom": {
+          "beta": "true"
+        },
+        "remarks": "Allows for injection of CDK references into \ncertain sections of the file.",
+        "stability": "experimental",
+        "summary": "Thin wrapper for a Smithy generated OpenAPI JSON spec file."
       },
       "fqn": "smithy-cdk.SmithyApiDefinition",
       "initializer": {
@@ -3742,7 +3747,7 @@
         },
         "locationInModule": {
           "filename": "lib/smithy-apidefinition.ts",
-          "line": 89
+          "line": 81
         },
         "parameters": [
           {
@@ -3756,7 +3761,7 @@
             "type": {
               "collection": {
                 "elementtype": {
-                  "fqn": "smithy-cdk.SmithySubstitution"
+                  "fqn": "smithy-cdk.SmithyIntegration"
                 },
                 "kind": "map"
               }
@@ -3767,22 +3772,26 @@
       "kind": "class",
       "locationInModule": {
         "filename": "lib/smithy-apidefinition.ts",
-        "line": 34
+        "line": 14
       },
       "methods": [
         {
           "docs": {
+            "remarks": "If an integration is found for a uri without having credentials already in the spec, then \nwill defer to the integration to create a credentials role.",
             "stability": "experimental",
-            "summary": "Called when the specification is initialized to allow this object to bind to the stack, add resources and have fun."
+            "summary": "Binds the definition to a SpecRestAPI, substituting provided integrations into the spec JSON."
           },
           "locationInModule": {
             "filename": "lib/smithy-apidefinition.ts",
-            "line": 36
+            "line": 25
           },
           "name": "bind",
           "overrides": "aws-cdk-lib.aws_apigateway.ApiDefinition",
           "parameters": [
             {
+              "docs": {
+                "summary": "- should ONLY be a SpecRestAPI, but jsii requires this type to be Construct."
+              },
               "name": "scope",
               "type": {
                 "fqn": "constructs.Construct"
@@ -3836,7 +3845,7 @@
           },
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 27
+            "line": 31
           },
           "name": "bindToSpecMethod",
           "parameters": [
@@ -3858,11 +3867,12 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 18
+            "line": 20
           },
-          "name": "uri",
+          "name": "credentialsRole",
+          "optional": true,
           "type": {
-            "primitive": "string"
+            "fqn": "aws-cdk-lib.aws_iam.IRole"
           }
         },
         {
@@ -3872,12 +3882,12 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 20
+            "line": 18
           },
-          "name": "credentialsRole",
+          "name": "uri",
           "optional": true,
           "type": {
-            "fqn": "aws-cdk-lib.aws_iam.IRole"
+            "primitive": "string"
           }
         }
       ],
@@ -3905,11 +3915,12 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 12
+            "line": 13
           },
-          "name": "uri",
+          "name": "credentialsRole",
+          "optional": true,
           "type": {
-            "primitive": "string"
+            "fqn": "aws-cdk-lib.aws_iam.IRole"
           }
         },
         {
@@ -3920,12 +3931,12 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 13
+            "line": 12
           },
-          "name": "credentialsRole",
+          "name": "uri",
           "optional": true,
           "type": {
-            "fqn": "aws-cdk-lib.aws_iam.IRole"
+            "primitive": "string"
           }
         }
       ],
@@ -3944,7 +3955,7 @@
         },
         "locationInModule": {
           "filename": "lib/smithy-integration.ts",
-          "line": 41
+          "line": 45
         },
         "parameters": [
           {
@@ -3965,7 +3976,7 @@
       "kind": "class",
       "locationInModule": {
         "filename": "lib/smithy-integration.ts",
-        "line": 35
+        "line": 39
       },
       "methods": [
         {
@@ -3974,7 +3985,7 @@
           },
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 53
+            "line": 57
           },
           "name": "bindToSpecMethod",
           "overrides": "smithy-cdk.SmithyIntegration",
@@ -4001,7 +4012,7 @@
       "kind": "interface",
       "locationInModule": {
         "filename": "lib/smithy-integration.ts",
-        "line": 30
+        "line": 34
       },
       "name": "SmithyLambdaIntegrationProps",
       "properties": [
@@ -4013,7 +4024,7 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 32
+            "line": 36
           },
           "name": "allowTestInvoke",
           "optional": true,
@@ -4029,7 +4040,7 @@
           "immutable": true,
           "locationInModule": {
             "filename": "lib/smithy-integration.ts",
-            "line": 31
+            "line": 35
           },
           "name": "credentialsRole",
           "optional": true,
@@ -4039,125 +4050,6 @@
         }
       ],
       "symbolId": "lib/smithy-integration:SmithyLambdaIntegrationProps"
-    },
-    "smithy-cdk.SmithySubstitution": {
-      "assembly": "smithy-cdk",
-      "docs": {
-        "stability": "experimental"
-      },
-      "fqn": "smithy-cdk.SmithySubstitution",
-      "initializer": {
-        "docs": {
-          "stability": "experimental"
-        },
-        "locationInModule": {
-          "filename": "lib/smithy-apidefinition.ts",
-          "line": 15
-        },
-        "parameters": [
-          {
-            "name": "uri",
-            "optional": true,
-            "type": {
-              "primitive": "string"
-            }
-          },
-          {
-            "name": "credentials",
-            "optional": true,
-            "type": {
-              "primitive": "string"
-            }
-          },
-          {
-            "name": "integration",
-            "optional": true,
-            "type": {
-              "fqn": "smithy-cdk.SmithyIntegration"
-            }
-          }
-        ]
-      },
-      "kind": "class",
-      "locationInModule": {
-        "filename": "lib/smithy-apidefinition.ts",
-        "line": 8
-      },
-      "methods": [
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "locationInModule": {
-            "filename": "lib/smithy-apidefinition.ts",
-            "line": 29
-          },
-          "name": "fromIntegration",
-          "parameters": [
-            {
-              "name": "integration",
-              "type": {
-                "fqn": "smithy-cdk.SmithyIntegration"
-              }
-            }
-          ],
-          "returns": {
-            "type": {
-              "fqn": "smithy-cdk.SmithySubstitution"
-            }
-          },
-          "static": true
-        }
-      ],
-      "name": "SmithySubstitution",
-      "properties": [
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "immutable": true,
-          "locationInModule": {
-            "filename": "lib/smithy-apidefinition.ts",
-            "line": 11
-          },
-          "name": "credentials",
-          "optional": true,
-          "type": {
-            "primitive": "string"
-          }
-        },
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "immutable": true,
-          "locationInModule": {
-            "filename": "lib/smithy-apidefinition.ts",
-            "line": 13
-          },
-          "name": "integration",
-          "optional": true,
-          "type": {
-            "fqn": "smithy-cdk.SmithyIntegration"
-          }
-        },
-        {
-          "docs": {
-            "stability": "experimental"
-          },
-          "immutable": true,
-          "locationInModule": {
-            "filename": "lib/smithy-apidefinition.ts",
-            "line": 9
-          },
-          "name": "uri",
-          "optional": true,
-          "type": {
-            "primitive": "string"
-          }
-        }
-      ],
-      "symbolId": "lib/smithy-apidefinition:SmithySubstitution"
     },
     "smithy-cdk.SpecMethod": {
       "assembly": "smithy-cdk",
@@ -4330,5 +4222,5 @@
     }
   },
   "version": "1.0.0",
-  "fingerprint": "+etE8tjSLnoDWt7GGecvd9Y2oNA1CQ7joWF5cxuV5ms="
+  "fingerprint": "R9P/UnPNTIU4FNHK1tX/HIMqsbuG0Z1b0P/habC+fFU="
 }
