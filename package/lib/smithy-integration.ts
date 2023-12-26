@@ -8,11 +8,29 @@ import { format as formatUrl } from 'url';
 import { ISpecMethod } from "./smithy-method";
 
 
+
+/**
+ * @beta
+ */
 export interface SmithyIntegrationProps {
+    
+    /**
+     * uri of the integration
+     */
     readonly uri?: string,
+
+    /**
+     * IAM Role that API Gateway should assume to use the integration
+     */
     readonly credentialsRole?: iam.IRole,
 }
 
+
+/**
+ * Base class for SmithyIntegrations, which bind a AWS resource to an API path from a Smithy spec. 
+ * At least one of uri/credentialsRole must be defined
+ * @beta
+ */
 export abstract class SmithyIntegration {
 
     readonly uri?: string
@@ -28,14 +46,39 @@ export abstract class SmithyIntegration {
         }
     }
 
+    
+    /**
+     * If applicable for the SmithyIntegration type, grants the provided API method 
+     * permissions to use the integration
+     *
+     * @param method - REST API path
+     */
     abstract bindToSpecMethod(method: ISpecMethod): void
 }
 
+
+/**
+ * @beta
+ */
 export interface SmithyLambdaIntegrationProps {
+    /**
+     * IAM Role API Gateway should use to invoke the Lambda. If 
+     * left undefined the integration will generated default permissions
+     * when bound to an API path. 
+     */
     readonly credentialsRole?: iam.IRole,
+
+    /**
+     * Only applicable when generating default permissions. Enable to 
+     * also generate default permissions to allow API Gateway to invoke
+     * the lambda while testing from the AWS console
+     */
     readonly allowTestInvoke?: boolean
 }
 
+/**
+ * @beta
+ */
 export class SmithyLambdaIntegration extends SmithyIntegration {
 
     private handler: lambda.IFunction
@@ -54,6 +97,13 @@ export class SmithyLambdaIntegration extends SmithyIntegration {
         this.enableTest = props?.allowTestInvoke ?? false;
     }
 
+    
+    /**
+     * Create permissions for API Gateway to invoke the lambda handler. If a 
+     * credentialsRole is already supplied then no new permissions are created
+     *
+     * @param method - REST API path which should invoke this lambda
+     */
     bindToSpecMethod(method: ISpecMethod) {
 
         // If the user explicitly set the ARN of a role to use (that already exists), don't create any permissions
