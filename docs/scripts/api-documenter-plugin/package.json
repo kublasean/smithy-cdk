@@ -1,0 +1,22 @@
+{
+  "name": "kublasean-api-documenter-plugin",
+  "version": "1.0.0",
+  "description": "plugin for API documenter to build a jekyll site",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@microsoft/api-documenter": "^7.23.15",
+    "@microsoft/api-extractor-model": "^7.28.3",
+    "@microsoft/tsdoc": "^0.14.2"
+  }
+}

@@ -140,3 +140,5 @@ package/tsdoc-metadata.json
 package/temp
 
 .jsii
+
+.DS_Store

@@ -1,0 +1,24 @@
+{
+  "name": "kublasean-docgen",
+  "version": "1.0.0",
+  "description": "Scripts for generating an API doc site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "generate": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
+    "@types/resolve": "^1.20.6",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@microsoft/api-documenter": "^7.23.15",
+    "@microsoft/api-extractor": "^7.39.0",
+    "kublasean-api-documenter-plugin": "file:api-documenter-plugin"
+  }
+}
