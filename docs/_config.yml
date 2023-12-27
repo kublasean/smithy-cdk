@@ -13,11 +13,18 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Smithy CDK API 
+title: Smithy CDK
 description: >- # this means to ignore newlines until "baseurl:"
   API docs for the smithy-cdk npm package
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/smithy-cdk" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
+author: ""
+github_username: kublasean
+
+header_pages:
+  - index.md
+  - api/index.md
+
 
 # Build settings
 markdown: kramdown
@@ -29,7 +36,7 @@ defaults:
     scope:
       path: "api"
     values:
-      layout: default
+      layout: page
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

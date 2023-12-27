@@ -19,6 +19,7 @@ export class KublaseanFeature extends MarkdownDocumenterFeature {
         // Add the Jekyll header
         const header: string = [
             '---',
+            `title: API`,
             '---',
             ''
         ].join('\n');
