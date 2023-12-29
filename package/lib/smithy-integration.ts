@@ -99,10 +99,10 @@ export class SmithyLambdaIntegration extends SmithyIntegration {
 
     
     /**
-     * Create permissions for API Gateway to invoke the lambda handler. If a 
+     * Create permissions for API Gateway to invoke the Lambda handler. If a 
      * credentialsRole is already supplied then no new permissions are created
      *
-     * @param method - REST API path which should invoke this lambda
+     * @param method - REST API path which should invoke this Lambda
      */
     bindToSpecMethod(method: ISpecMethod) {
 

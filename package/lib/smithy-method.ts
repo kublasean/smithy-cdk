@@ -14,7 +14,7 @@ export interface ISpecMethod {
 }
 
 /**
- * Represents a REST API path from a Smity spec
+ * Represents a REST API path from a Smithy spec
  * @beta
  */
 export class SpecMethod implements ISpecMethod {

@@ -17,7 +17,7 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
     /**
      * Binds the definition to a SpecRestAPI, substituting provided integrations into the spec JSON.
      * 
-     * If an integration is found for a uri without having credentials already in the spec, then 
+     * If an integration is found for a URI without having credentials already in the spec, then 
      * will defer to the integration to create a credentials role.
      *
      * @param scope - should ONLY be a SpecRestAPI, but jsii requires this type to be Construct
@@ -78,6 +78,15 @@ export class SmithyApiDefinition extends apigw.ApiDefinition {
         }
     }
 
+    
+    /**
+     * Creates an instance of SmithyApiDefinition. Where substitution keys are found in the definition,
+     *  they will be replaced with the supplied integration
+     *
+     * @constructor
+     * @param definition - OpenAPI JSON model
+     * @param substitutions - list of substitution keys and integrations
+     */
     constructor(private definition: unknown, private substitutions: { [key: string]: SmithyIntegration }) {
         super();
     }
@@ -96,8 +105,6 @@ function getSubstitutionKey(wrappedSubKey: string) {
     }
 
     const subKey = wrappedSubKey.substring(2, wrappedSubKey.length - 1);
-    //console.log(subKey);
-
     return subKey;
 }
 

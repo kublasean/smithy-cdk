@@ -27,6 +27,6 @@ function buildDocs(): void {
     execSync('npx --no-install api-documenter generate -o ../api');
 }
 
-//extractApi();
+extractApi();
 
 buildDocs();
