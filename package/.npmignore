@@ -8,3 +8,9 @@ dist
 # Include .jsii and .jsii.gz
 !.jsii
 !.jsii.gz
+
+tsconfig.dev.json
+
+api-extractor.json
+
+.eslintrc.cjs
