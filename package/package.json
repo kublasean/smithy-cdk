@@ -11,7 +11,7 @@
     "package": "jsii-pacmak"
   },
   "author": {
-    "name": "Sean Whalen",
+    "name": "sean whalen",
     "url": "https://kublasean.github.io/"
   },
   "repository": {
@@ -53,5 +53,6 @@
   },
   "bundleDependencies": [
     "jsonpath"
-  ]
+  ],
+  "keywords": ["cdk", "awscdk", "smithy"]
 }
