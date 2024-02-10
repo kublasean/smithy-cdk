@@ -1,0 +1,20 @@
+{
+  "name": "@smithy-cdk/hi-bye-api-extensions",
+  "version": "1.0.0",
+  "description": "Convert the quickstart guide Smithy model into the [OpenAPI](https://spec.openapis.org/oas/latest.html) format.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf ./node_modules && tsc --build --clean && rm -rf ./build && rm package-lock.json",
+    "preinstall": "smithy build && npm i build/smithy/source/typescript-client-codegen",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@smithy-cdk/hi-bye-api-client": "file:build/smithy/source/typescript-client-codegen"
+  }
+}

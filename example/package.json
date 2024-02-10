@@ -22,6 +22,7 @@
     "typescript": "~5.2.2"
   },
   "dependencies": {
+    "@smithy-cdk/hi-bye-api-extensions": "file:lib/smithy",
     "aws-cdk-lib": "^2.112.0",
     "aws-lambda": "^1.0.7",
     "constructs": "^10.0.0",
