@@ -6,7 +6,7 @@
       "software.amazon.smithy:smithy-openapi:1.44.0",
       "software.amazon.smithy:smithy-aws-traits:1.44.0",
       "software.amazon.smithy:smithy-aws-apigateway-openapi:1.44.0",
-      
+
       "software.amazon.smithy.typescript:smithy-typescript-codegen:0.19.0",
       "software.amazon.smithy.typescript:smithy-aws-typescript-codegen:0.19.0"
     ]
@@ -19,17 +19,18 @@
           "protocol": "aws.protocols#restJson1",
           "version": "3.0.2",
           "apiGatewayDefaults": "2023-08-11",
-          "disableCloudFormationSubstitution": false
+          "disableCloudFormationSubstitution": false,
+          "apiGatewayType": "REST"
         }
       }
-    }
-  },
-  "plugins": {
-    "typescript-client-codegen": {
-      "package": "@smithy-cdk/hi-bye-api-client",
-      "packageVersion": "0.0.1",
-      "packageManager": "npm",
-      "protocol": "aws.protocols#restJson1"
+    },
+    "ts-client": {
+      "plugins": {
+        "typescript-codegen": {
+          "package": "@smithy-cdk/hi-bye-api-client",
+          "packageVersion": "0.0.1"
+        }
+      }
     }
   }
 }

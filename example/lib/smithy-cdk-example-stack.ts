@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as node_lambda from 'aws-cdk-lib/aws-lambda-nodejs'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as triggers from 'aws-cdk-lib/triggers';
 
 import { SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
@@ -9,6 +10,7 @@ import { SmithyApiDefinition, SmithyLambdaIntegration } from 'smithy-cdk';
 import * as fs from 'fs'
 import * as path from 'path'
 import { ExecSyncOptions, execSync } from 'node:child_process';
+import { API_ENDPOINT_ENV } from './smithy-cdk-example-stack.sdktest';
 
 interface SmithyBuildOptions {
     readonly outDir?: string
@@ -67,11 +69,27 @@ export class SmithyCdkExampleStack extends cdk.Stack {
         });
 
         // Create the API Gateway REST API
-        new SpecRestApi(this, 'hiByeApi', {
+        const api = new SpecRestApi(this, 'hiByeApi', {
             apiDefinition: new SmithyApiDefinition(modelJson, {
                 'SayHiLambda': new SmithyLambdaIntegration(sayHiLambda, { allowTestInvoke: true }),
                 'SayByeLambda': new SmithyLambdaIntegration(sayByeLambda, { allowTestInvoke: true })
             })
+        });
+
+        const sdkTestLambda = new node_lambda.NodejsFunction(this, 'sdktest', {
+            description: `Tests HiByeAPI routes -${new Date()}`, // force update every deploy
+            runtime: lambda.Runtime.NODEJS_20_X,
+            environment: {
+                [API_ENDPOINT_ENV]: api.url,
+            }
+        });
+
+        // Run tests on Lambda / API Gateway updates using Smithy generated client SDK
+        new triggers.Trigger(this, 'TriggerHiByeApiTests', {
+            handler: sdkTestLambda,
+            invocationType: triggers.InvocationType.REQUEST_RESPONSE,
+            executeAfter: [sayHiLambda, sayByeLambda, api],
+            executeOnHandlerChange: true
         });
     }
 }

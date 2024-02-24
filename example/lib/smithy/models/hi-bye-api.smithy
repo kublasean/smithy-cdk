@@ -2,11 +2,13 @@ $version: "2.0"
 
 namespace smithycdk
 
+use aws.auth#sigv4
 use aws.protocols#restJson1
 use aws.apigateway#requestValidator
 use aws.apigateway#integration
 
 /// Provides a friendly greeting from a AWS API Gateway deployed REST API
+@cors
 @restJson1
 @requestValidator("full")
 @title("HiByeApi")
