@@ -1,17 +1,22 @@
 {
-  "name": "@smithy-cdk/hi-bye-api-extensions",
+  "name": "@smithy-cdk-example/sdk",
   "version": "1.0.0",
   "description": "Convert the quickstart guide Smithy model into the [OpenAPI](https://spec.openapis.org/oas/latest.html) format.",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf ./node_modules && tsc --build --clean && rm -rf ./build && rm package-lock.json",
-    "preinstall": "smithy build && npm i build/smithy/ts-client/typescript-codegen --no-save && npm run build --prefix ./build/smithy/ts-client/typescript-codegen",
+    "install-client-sdk": "npm i build/smithy/ts-client/typescript-codegen && npm run build --prefix build/smithy/ts-client/typescript-codegen",
+    "install-server-sdk": "npm i build/smithy/ts-server/typescript-ssdk-codegen && npm run build --prefix build/smithy/ts-server/typescript-ssdk-codegen",
+    "preinstall": "smithy build && npm run install-client-sdk && npm run install-server-sdk",
+    "postinstall": "npm run build",
     "build": "tsc",
     "watch": "tsc -w"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@smithy-cdk-example/hi-bye-client": "file:build/smithy/ts-client/typescript-codegen",
+    "@smithy-cdk-example/hi-bye-ssdk": "file:build/smithy/ts-server/typescript-ssdk-codegen",
     "typescript": "^5.3.3"
   }
 }

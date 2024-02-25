@@ -5,6 +5,7 @@
     "example": "bin/example.js"
   },
   "scripts": {
+    "clean": "npm run clean --prefix lib/smithy && tsc --build --clean && rm -rf node_modules cdk.out && rm package-lock.json",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
@@ -12,17 +13,19 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.130",
+    "@types/jsonpath": "^0.2.4",
     "@types/node": "20.9.0",
     "aws-cdk": "2.110.0",
     "esbuild": "^0.19.10",
     "typescript": "~5.2.2"
   },
   "dependencies": {
-    "@smithy-cdk/hi-bye-api-extensions": "file:lib/smithy",
+    "@aws-smithy/server-apigateway": "^1.0.0-alpha.10",
+    "@smithy-cdk-example/sdk": "file:lib/smithy",
     "aws-cdk-lib": "^2.112.0",
     "aws-lambda": "^1.0.7",
     "constructs": "^10.0.0",
-    "smithy-cdk": "file:../package",
+    "smithy-cdk": "^1.0.1",
     "source-map-support": "^0.5.21"
   }
 }

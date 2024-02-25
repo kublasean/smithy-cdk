@@ -1,31 +1,30 @@
-import { HiByeApi, SayHiCommandInput, SayByeCommandInput, SayHiCommandOutput, SayByeCommandOutput } from '@smithy-cdk/hi-bye-api-extensions'
-
+import { client as sdk } from '@smithy-cdk-example/sdk';
 
 export async function doTests(endpoint: string) {
     console.log(`Doing tests against ${endpoint}`);
 
-    const client = new HiByeApi({
+    const client = new sdk.HiByeApi({
         endpoint,
     });
 
     // test the {baseUrl}/hi endpoint
-    const hiRequestInput: SayHiCommandInput = {
+    const hiRequestInput: sdk.SayHiCommandInput = {
         name: "Peaches"
     };
 
-    const sayHiOutput: SayHiCommandOutput = await client.sayHi(hiRequestInput);
+    const sayHiOutput: sdk.SayHiCommandOutput = await client.sayHi(hiRequestInput);
     console.log(sayHiOutput.greeting);
 
 
     // test the {baseUrl}/bye endpoint
-    const byeRequestInput: SayByeCommandInput = {
+    const byeRequestInput: sdk.SayByeCommandInput = {
         name: "James",
         salutation: "Dear Sir"
     };
 
-    const sayByeOutput: SayByeCommandOutput = await client.sayBye(byeRequestInput);
+    const sayByeOutput: sdk.SayByeCommandOutput = await client.sayBye(byeRequestInput);
     console.log(sayByeOutput.farewell);
 }
 
 // Uncomment to test locally
-// doTests('[API ENDPOINT]');
+doTests('https://he8024pta3.execute-api.us-east-2.amazonaws.com/prod');

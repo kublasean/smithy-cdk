@@ -1,11 +1,12 @@
 $version: "2.0"
 
-namespace smithycdk
+namespace smithycdkexample
 
 use aws.auth#sigv4
 use aws.protocols#restJson1
 use aws.apigateway#requestValidator
 use aws.apigateway#integration
+use smithy.framework#ValidationException
 
 /// Provides a friendly greeting from a AWS API Gateway deployed REST API
 @cors
@@ -15,6 +16,7 @@ use aws.apigateway#integration
 service HiByeApi {
     version: "2023-12-12"
     operations: [SayHi, SayBye]
+    errors: [ValidationException]
 }
 
 @input

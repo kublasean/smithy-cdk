@@ -1,6 +1,9 @@
 # Smithy to OpenAPI Template
 Convert the quickstart guide Smithy model into the [OpenAPI](https://spec.openapis.org/oas/latest.html) format.
 
+## Dependencies
+1. smithy-cli 1.44.0
+
 ## Build
 To build the models in this project run: 
 ```console

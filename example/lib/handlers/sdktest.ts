@@ -1,5 +1,5 @@
 import { Handler } from 'aws-lambda';
-import { doTests } from '../sdk-test';
+import { doTests } from '../../sdk-test';
 
 export const API_ENDPOINT_ENV = 'API_ENDPOINT';
 

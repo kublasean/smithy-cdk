@@ -1,3 +1,2 @@
-export * from "@smithy-cdk/hi-bye-api-client";
-
-export const HELLO_WORLD = "1234";
+export * as client from '@smithy-cdk-example/hi-bye-client';
+export * as server from '@smithy-cdk-example/hi-bye-ssdk';

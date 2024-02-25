@@ -1,16 +1,13 @@
 import * as cdk from 'aws-cdk-lib';
-import * as node_lambda from 'aws-cdk-lib/aws-lambda-nodejs'
-import * as lambda from 'aws-cdk-lib/aws-lambda'
-import * as triggers from 'aws-cdk-lib/triggers';
 
 import { SpecRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import { SmithyApiDefinition, SmithyLambdaIntegration } from 'smithy-cdk';
+import { NodeLambdaHelperTest } from './node-lambda-helper';
 
 import * as fs from 'fs'
 import * as path from 'path'
 import { ExecSyncOptions, execSync } from 'node:child_process';
-import { API_ENDPOINT_ENV } from './smithy-cdk-example-stack.sdktest';
 
 interface SmithyBuildOptions {
     readonly outDir?: string
@@ -50,18 +47,18 @@ function buildSmithyModel(props: SmithyBuildOptions): any {
 }
 
 export class SmithyCdkExampleStack extends cdk.Stack {
+    readonly apiUrl: string;
+
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         // Lambdas
-        const sayHiLambda = new node_lambda.NodejsFunction(this, 'sayhi', {
+        const sayHiLambda = new NodeLambdaHelperTest(this, 'sayhi', {
             description: 'Greets the caller',
-            runtime: lambda.Runtime.NODEJS_20_X
-        });
-        const sayByeLambda = new node_lambda.NodejsFunction(this, 'saybye', {
+        }).lambda;
+        const sayByeLambda = new NodeLambdaHelperTest(this, 'saybye', {
             description: 'Bids farewell to the caller',
-            runtime: lambda.Runtime.NODEJS_20_X
-        });
+        }).lambda;
 
         const modelJson = buildSmithyModel({
             srcDir: path.join(__dirname, 'smithy'),
@@ -76,20 +73,6 @@ export class SmithyCdkExampleStack extends cdk.Stack {
             })
         });
 
-        const sdkTestLambda = new node_lambda.NodejsFunction(this, 'sdktest', {
-            description: `Tests HiByeAPI routes -${new Date()}`, // force update every deploy
-            runtime: lambda.Runtime.NODEJS_20_X,
-            environment: {
-                [API_ENDPOINT_ENV]: api.url,
-            }
-        });
-
-        // Run tests on Lambda / API Gateway updates using Smithy generated client SDK
-        new triggers.Trigger(this, 'TriggerHiByeApiTests', {
-            handler: sdkTestLambda,
-            invocationType: triggers.InvocationType.REQUEST_RESPONSE,
-            executeAfter: [sayHiLambda, sayByeLambda, api],
-            executeOnHandlerChange: true
-        });
+        this.apiUrl = api.url;
     }
 }
