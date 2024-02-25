@@ -13,6 +13,9 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk diff`    compare deployed stack with current state
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
+## Non-NPM Required Dependencies
+1. smithy-cli ^1.44.0
+2. swagger-codegen ^3.0.54
 
 ## Timing
 ```bash

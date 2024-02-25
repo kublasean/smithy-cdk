@@ -9,7 +9,6 @@ use aws.apigateway#integration
 use smithy.framework#ValidationException
 
 /// Provides a friendly greeting from a AWS API Gateway deployed REST API
-@cors
 @restJson1
 @requestValidator("full")
 @title("HiByeApi")

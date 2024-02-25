@@ -8,9 +8,9 @@
     "install-client-sdk": "npm i build/smithy/ts-client/typescript-codegen && npm run build --prefix build/smithy/ts-client/typescript-codegen",
     "install-server-sdk": "npm i build/smithy/ts-server/typescript-ssdk-codegen && npm run build --prefix build/smithy/ts-server/typescript-ssdk-codegen",
     "preinstall": "smithy build && npm run install-client-sdk && npm run install-server-sdk",
-    "postinstall": "npm run build",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "generate-docs": "swagger-codegen generate -i build/smithy/openapi-conversion/openapi/HiByeApi.openapi.json -l html2 -o build/swagger-codegen"
   },
   "author": "",
   "license": "MIT",
